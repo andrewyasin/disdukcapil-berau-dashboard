@@ -1,0 +1,130 @@
+{
+  "last_updated": "2026-06-23T04:17:07.019828",
+  "app_info": {
+    "title": "Disdukcapil Berau",
+    "developer": "Pemkab Berau",
+    "score": 3.87,
+    "ratings": 465,
+    "version": "3.0.3",
+    "installs": "10,000+"
+  },
+  "periode": {
+    "mulai": "2019-11-11",
+    "selesai": "2026-05-17"
+  },
+  "total_review": 465,
+  "rata_rata_bintang": 3.87,
+  "distribusi_bintang": {
+    "1": 89,
+    "2": 26,
+    "3": 25,
+    "4": 42,
+    "5": 283
+  },
+  "distribusi_sentimen": {
+    "Positif": 325,
+    "Netral": 25,
+    "Negatif": 115
+  },
+  "tren_per_tahun": [
+    {
+      "tahun": 2019,
+      "Positif": 32,
+      "Netral": 0,
+      "Negatif": 0
+    },
+    {
+      "tahun": 2020,
+      "Positif": 171,
+      "Netral": 15,
+      "Negatif": 51
+    },
+    {
+      "tahun": 2021,
+      "Positif": 36,
+      "Netral": 4,
+      "Negatif": 23
+    },
+    {
+      "tahun": 2022,
+      "Positif": 36,
+      "Netral": 1,
+      "Negatif": 13
+    },
+    {
+      "tahun": 2023,
+      "Positif": 28,
+      "Netral": 1,
+      "Negatif": 13
+    },
+    {
+      "tahun": 2024,
+      "Positif": 9,
+      "Netral": 2,
+      "Negatif": 9
+    },
+    {
+      "tahun": 2025,
+      "Positif": 9,
+      "Netral": 2,
+      "Negatif": 4
+    },
+    {
+      "tahun": 2026,
+      "Positif": 4,
+      "Netral": 0,
+      "Negatif": 2
+    }
+  ],
+  "avg_bintang_per_tahun": {
+    "2019": 4.97,
+    "2020": 3.99,
+    "2021": 3.38,
+    "2022": 3.88,
+    "2023": 3.67,
+    "2024": 2.95,
+    "2025": 3.6,
+    "2026": 3.5
+  },
+  "frekuensi_kategori": {
+    "Pujian Umum": 216,
+    "Kemudahan Aplikasi": 95,
+    "Kecepatan Proses": 86,
+    "Lainnya": 82,
+    "Dokumen": 71,
+    "Pelayanan": 68,
+    "Error / Bug": 60,
+    "KTP / e-KTP": 26,
+    "Akta Kelahiran": 8
+  },
+  "responsivitas_developer": {
+    "Ya": 61,
+    "Tidak": 404
+  },
+  "sample_reviews": [
+    {
+      "nama": "Weli Yanti",
+      "isi": "baik",
+      "bintang": 5,
+      "tanggal": "2026-03-11",
+      "likes": 0,
+      "versi": "3.0.3"
+    },
+    {
+      "nama": "Like Boss",
+      "isi": "untuk aplikasi sdh bagus, tetapi dalam pelayanan pertama saja sdh membingungkan entah itu disuruh cari dokumen 2tahun lalu",
+      "bintang": 1,
+      "tanggal": "2026-03-02",
+      "likes": 1,
+      "versi": "3.0.3"
+    },
+    {
+      "nama": "KRIMINAL 24 JAM",
+      "isi": "kenapa sangat lama upload KTP digital",
+      "bintang": 4,
+      "tanggal": "2026-02-10",
+      "likes": 0,
+      "versi": "3.0.3"
+    }
+  ]
+}

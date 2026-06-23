@@ -1,0 +1,600 @@
+<!DOCTYPE html>
+<html lang="id">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Dasbor Ulasan — Aplikasi Disdukcapil Berau</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link href="https://fonts.googleapis.com/css2?family=Lora:ital,wght@0,500;0,600;0,700;1,500&family=IBM+Plex+Sans:wght@400;500;600;700&family=IBM+Plex+Mono:wght@500;600;700&display=swap" rel="stylesheet">
+<script src="chart.umd.min.js"></script>
+<style>
+  :root{
+    --ink:#1B2A4A;
+    --ink-soft:#3A4A6B;
+    --paper:#F7F1E3;
+    --paper-deep:#EFE6D2;
+    --stamp-red:#C1442D;
+    --sawah-green:#3D7A5C;
+    --kuningan:#C9A86A;
+    --line:#D8CBA8;
+    --shadow: 0 2px 0 rgba(27,42,74,0.06);
+  }
+  *{box-sizing:border-box;}
+  body{
+    margin:0;
+    background:var(--paper);
+    background-image:
+      radial-gradient(circle at 100% 0%, rgba(201,168,106,0.10), transparent 40%),
+      repeating-linear-gradient(0deg, rgba(27,42,74,0.025) 0px, rgba(27,42,74,0.025) 1px, transparent 1px, transparent 28px);
+    color:var(--ink);
+    font-family:'IBM Plex Sans', sans-serif;
+    -webkit-font-smoothing:antialiased;
+  }
+  a{color:inherit;}
+  .wrap{max-width:1100px;margin:0 auto;padding:0 24px 80px;}
+
+  /* ── KOP SURAT / HEADER ─────────────────────────────────────────── */
+  .kop{
+    border-bottom:3px double var(--ink);
+    padding:36px 0 22px;
+    display:flex;
+    justify-content:space-between;
+    align-items:flex-end;
+    gap:24px;
+    flex-wrap:wrap;
+  }
+  .kop-eyebrow{
+    font-family:'IBM Plex Mono', monospace;
+    font-size:11px;
+    letter-spacing:0.14em;
+    text-transform:uppercase;
+    color:var(--ink-soft);
+    margin:0 0 10px;
+  }
+  .kop h1{
+    font-family:'Lora', serif;
+    font-weight:700;
+    font-size:clamp(28px, 4vw, 40px);
+    line-height:1.15;
+    margin:0;
+    letter-spacing:-0.01em;
+  }
+  .kop .sub{
+    font-size:14px;
+    color:var(--ink-soft);
+    margin-top:8px;
+    max-width:460px;
+  }
+  .meta-block{
+    text-align:right;
+    font-family:'IBM Plex Mono', monospace;
+    font-size:12px;
+    color:var(--ink-soft);
+    line-height:1.7;
+  }
+  .meta-block strong{color:var(--ink);}
+
+  /* ── STEMPEL (signature element) ──────────────────────────────── */
+  .stempel-row{
+    display:flex;
+    align-items:center;
+    gap:28px;
+    padding:30px 0 8px;
+    flex-wrap:wrap;
+  }
+  .stempel{
+    width:128px;height:128px;
+    border-radius:50%;
+    border:3px solid var(--stamp-red);
+    display:flex;
+    flex-direction:column;
+    align-items:center;
+    justify-content:center;
+    color:var(--stamp-red);
+    transform:rotate(-7deg);
+    flex-shrink:0;
+    position:relative;
+    background:
+      radial-gradient(circle, rgba(193,68,45,0.06), transparent 70%);
+    opacity:0;
+    animation:stamp-in 0.5s 0.15s cubic-bezier(.2,1.4,.4,1) forwards;
+  }
+  .stempel::before{
+    content:'';
+    position:absolute;
+    inset:8px;
+    border:1px solid var(--stamp-red);
+    border-radius:50%;
+    opacity:0.55;
+  }
+  .stempel .nilai{
+    font-family:'IBM Plex Mono', monospace;
+    font-weight:700;
+    font-size:30px;
+    line-height:1;
+  }
+  .stempel .label{
+    font-family:'IBM Plex Mono', monospace;
+    font-size:9px;
+    letter-spacing:0.08em;
+    text-transform:uppercase;
+    margin-top:4px;
+  }
+  @keyframes stamp-in{
+    from{opacity:0; transform:rotate(-22deg) scale(1.5);}
+    to{opacity:1; transform:rotate(-7deg) scale(1);}
+  }
+  .ringkasan-cepat{
+    display:flex;
+    gap:28px;
+    flex-wrap:wrap;
+    font-family:'IBM Plex Mono', monospace;
+  }
+  .ringkasan-cepat .item .n{
+    font-size:26px;
+    font-weight:700;
+    color:var(--ink);
+    display:block;
+  }
+  .ringkasan-cepat .item .t{
+    font-size:11px;
+    color:var(--ink-soft);
+    text-transform:uppercase;
+    letter-spacing:0.06em;
+  }
+
+  /* ── PEMBAGI PASAL ────────────────────────────────────────────── */
+  .pasal{
+    margin-top:54px;
+  }
+  .pasal-head{
+    display:flex;
+    align-items:baseline;
+    gap:14px;
+    margin-bottom:18px;
+  }
+  .pasal-num{
+    font-family:'IBM Plex Mono', monospace;
+    font-size:13px;
+    color:var(--kuningan);
+    background:var(--ink);
+    padding:3px 9px;
+    border-radius:2px;
+    letter-spacing:0.04em;
+  }
+  .pasal-head h2{
+    font-family:'Lora', serif;
+    font-weight:600;
+    font-style:italic;
+    font-size:21px;
+    margin:0;
+    color:var(--ink);
+  }
+  .pasal-line{
+    flex:1;
+    height:1px;
+    background:var(--line);
+    margin-left:4px;
+  }
+
+  /* ── GRID & KARTU ─────────────────────────────────────────────── */
+  .grid{display:grid; gap:18px;}
+  .grid-2{grid-template-columns:1fr 1fr;}
+  .grid-3{grid-template-columns:1fr 1fr 1fr;}
+  @media (max-width:760px){
+    .grid-2,.grid-3{grid-template-columns:1fr;}
+    .kop{flex-direction:column; align-items:flex-start;}
+    .meta-block{text-align:left;}
+  }
+  .kartu{
+    background:#FFFDF8;
+    border:1px solid var(--line);
+    border-radius:3px;
+    padding:20px 22px;
+    box-shadow:var(--shadow);
+  }
+  .kartu h3{
+    font-family:'IBM Plex Sans', sans-serif;
+    font-weight:600;
+    font-size:13px;
+    text-transform:uppercase;
+    letter-spacing:0.05em;
+    color:var(--ink-soft);
+    margin:0 0 16px;
+  }
+  .kartu canvas{max-height:280px;}
+
+  /* ── TABEL ────────────────────────────────────────────────────── */
+  table{
+    width:100%;
+    border-collapse:collapse;
+    font-size:13.5px;
+  }
+  thead th{
+    text-align:left;
+    font-family:'IBM Plex Mono', monospace;
+    font-size:10.5px;
+    text-transform:uppercase;
+    letter-spacing:0.05em;
+    color:var(--ink-soft);
+    border-bottom:1.5px solid var(--ink);
+    padding:8px 10px;
+  }
+  tbody td{
+    padding:10px 10px;
+    border-bottom:1px solid var(--line);
+    vertical-align:top;
+  }
+  tbody tr:hover{background:var(--paper-deep);}
+  .bintang-pill{
+    font-family:'IBM Plex Mono', monospace;
+    font-weight:600;
+    font-size:12px;
+    padding:2px 7px;
+    border-radius:10px;
+    white-space:nowrap;
+  }
+  .bintang-pill.positif{background:rgba(61,122,92,0.13); color:var(--sawah-green);}
+  .bintang-pill.netral{background:rgba(201,168,106,0.22); color:#8a6d2f;}
+  .bintang-pill.negatif{background:rgba(193,68,45,0.12); color:var(--stamp-red);}
+  .isi-review{color:var(--ink-soft); max-width:380px;}
+
+  /* ── KATEGORI BAR LIST ────────────────────────────────────────── */
+  .kat-list{display:flex; flex-direction:column; gap:10px;}
+  .kat-row{display:flex; align-items:center; gap:10px;}
+  .kat-row .nama{
+    width:150px;
+    flex-shrink:0;
+    font-size:12.5px;
+    color:var(--ink);
+  }
+  .kat-row .bar-bg{
+    flex:1;
+    height:10px;
+    background:var(--paper-deep);
+    border-radius:5px;
+    overflow:hidden;
+  }
+  .kat-row .bar-fg{
+    height:100%;
+    background:var(--ink-soft);
+    border-radius:5px;
+  }
+  .kat-row .jumlah{
+    font-family:'IBM Plex Mono', monospace;
+    font-size:12px;
+    width:34px;
+    text-align:right;
+    color:var(--ink-soft);
+  }
+
+  /* ── FOOTER ───────────────────────────────────────────────────── */
+  footer{
+    margin-top:60px;
+    padding-top:22px;
+    border-top:1px solid var(--line);
+    font-size:12px;
+    color:var(--ink-soft);
+    display:flex;
+    justify-content:space-between;
+    flex-wrap:wrap;
+    gap:8px;
+  }
+  footer code{
+    font-family:'IBM Plex Mono', monospace;
+    background:var(--paper-deep);
+    padding:2px 6px;
+    border-radius:3px;
+  }
+
+  /* ── STATUS LOADING / ERROR ──────────────────────────────────── */
+  #status{
+    padding:60px 0;
+    text-align:center;
+    color:var(--ink-soft);
+    font-family:'IBM Plex Mono', monospace;
+    font-size:13px;
+  }
+  .hidden{display:none !important;}
+
+  @media (prefers-reduced-motion: reduce){
+    .stempel{animation:none; opacity:1;}
+  }
+</style>
+</head>
+<body>
+<div class="wrap">
+
+  <div class="kop">
+    <div>
+      <p class="kop-eyebrow">Pemanfaatan Big Data · Aspek 50303 EPSS</p>
+      <h1>Dasbor Ulasan Publik<br>Aplikasi Disdukcapil Berau</h1>
+      <p class="sub">Pemantauan ulasan pengguna aplikasi layanan kependudukan digital Kabupaten Berau, dihimpun otomatis dari Google Play Store.</p>
+    </div>
+    <div class="meta-block">
+      <div>Sumber: <strong>Google Play Store</strong></div>
+      <div>Pembaruan: <strong id="meta-update">memuat…</strong></div>
+      <div>Periode: <strong id="meta-periode">memuat…</strong></div>
+    </div>
+  </div>
+
+  <div id="status">Memuat data ulasan…</div>
+
+  <div id="konten" class="hidden">
+
+    <div class="stempel-row">
+      <div class="stempel">
+        <span class="nilai" id="stempel-rating">–</span>
+        <span class="label">dari 5.0</span>
+      </div>
+      <div class="ringkasan-cepat">
+        <div class="item"><span class="n" id="ring-total">–</span><span class="t">Total Ulasan</span></div>
+        <div class="item"><span class="n" id="ring-positif">–</span><span class="t">Sentimen Positif</span></div>
+        <div class="item"><span class="n" id="ring-negatif">–</span><span class="t">Sentimen Negatif</span></div>
+        <div class="item"><span class="n" id="ring-respons">–</span><span class="t">Direspons Developer</span></div>
+      </div>
+    </div>
+
+    <!-- PASAL 1 -->
+    <div class="pasal">
+      <div class="pasal-head">
+        <span class="pasal-num">01</span>
+        <h2>Distribusi Penilaian</h2>
+        <span class="pasal-line"></span>
+      </div>
+      <div class="grid grid-2">
+        <div class="kartu">
+          <h3>Distribusi Rating Bintang</h3>
+          <canvas id="chart-bintang"></canvas>
+        </div>
+        <div class="kartu">
+          <h3>Proporsi Sentimen</h3>
+          <canvas id="chart-sentimen"></canvas>
+        </div>
+      </div>
+    </div>
+
+    <!-- PASAL 2 -->
+    <div class="pasal">
+      <div class="pasal-head">
+        <span class="pasal-num">02</span>
+        <h2>Tren dari Waktu ke Waktu</h2>
+        <span class="pasal-line"></span>
+      </div>
+      <div class="grid grid-2">
+        <div class="kartu">
+          <h3>Tren Ulasan per Tahun</h3>
+          <canvas id="chart-tren"></canvas>
+        </div>
+        <div class="kartu">
+          <h3>Rata-rata Bintang per Tahun</h3>
+          <canvas id="chart-avg-tahun"></canvas>
+        </div>
+      </div>
+    </div>
+
+    <!-- PASAL 3 -->
+    <div class="pasal">
+      <div class="pasal-head">
+        <span class="pasal-num">03</span>
+        <h2>Topik &amp; Responsivitas</h2>
+        <span class="pasal-line"></span>
+      </div>
+      <div class="grid grid-2">
+        <div class="kartu">
+          <h3>Frekuensi Topik Ulasan</h3>
+          <div class="kat-list" id="kat-list"></div>
+        </div>
+        <div class="kartu">
+          <h3>Responsivitas Developer</h3>
+          <canvas id="chart-respons"></canvas>
+        </div>
+      </div>
+    </div>
+
+    <!-- PASAL 4 -->
+    <div class="pasal">
+      <div class="pasal-head">
+        <span class="pasal-num">04</span>
+        <h2>Ulasan Terbaru</h2>
+        <span class="pasal-line"></span>
+      </div>
+      <div class="kartu">
+        <table>
+          <thead>
+            <tr><th>Pengguna</th><th>Isi Ulasan</th><th>Bintang</th><th>Tanggal</th><th>Versi</th></tr>
+          </thead>
+          <tbody id="tabel-review"></tbody>
+        </table>
+      </div>
+    </div>
+
+  </div>
+
+  <footer>
+    <span>Dibangun untuk mendukung penilaian EPSS &mdash; Aspek 50303 Pemanfaatan Big Data</span>
+    <span>Data diperbarui otomatis harian via <code>GitHub Actions</code></span>
+  </footer>
+
+</div>
+
+<script>
+const PALET = {
+  ink:'#1B2A4A', inkSoft:'#3A4A6B', stamp:'#C1442D', sawah:'#3D7A5C', kuningan:'#C9A86A',
+  bintang:['#C1442D','#D9824F','#C9A86A','#7FA98C','#3D7A5C']
+};
+
+Chart.defaults.font.family = "'IBM Plex Sans', sans-serif";
+Chart.defaults.color = '#3A4A6B';
+Chart.defaults.borderColor = '#D8CBA8';
+
+async function muatData(){
+  try{
+    const res = await fetch('data.json', {cache:'no-store'});
+    if(!res.ok) throw new Error('Gagal memuat data.json');
+    const data = await res.json();
+    render(data);
+  }catch(err){
+    document.getElementById('status').innerHTML =
+      'Data belum tersedia. Jalankan workflow GitHub Actions untuk membuat <code>data.json</code> pertama kali.<br><br>' +
+      '<span style="color:#C1442D">' + err.message + '</span>';
+  }
+}
+
+function formatTanggal(iso){
+  if(!iso) return '–';
+  const d = new Date(iso);
+  return d.toLocaleDateString('id-ID', {day:'2-digit', month:'short', year:'numeric'});
+}
+
+function render(data){
+  document.getElementById('status').classList.add('hidden');
+  document.getElementById('konten').classList.remove('hidden');
+
+  document.getElementById('meta-update').textContent = formatTanggal(data.last_updated);
+  document.getElementById('meta-periode').textContent =
+    (data.periode.mulai ? formatTanggal(data.periode.mulai) : '–') + ' s.d. ' +
+    (data.periode.selesai ? formatTanggal(data.periode.selesai) : '–');
+
+  document.getElementById('stempel-rating').textContent = data.rata_rata_bintang.toFixed(2);
+
+  const total = data.total_review;
+  const pos = data.distribusi_sentimen.Positif || 0;
+  const neg = data.distribusi_sentimen.Negatif || 0;
+  const respondedPct = total ? Math.round((data.responsivitas_developer.Ya/total)*100) : 0;
+
+  document.getElementById('ring-total').textContent = total.toLocaleString('id-ID');
+  document.getElementById('ring-positif').textContent = total ? Math.round(pos/total*100)+'%' : '0%';
+  document.getElementById('ring-negatif').textContent = total ? Math.round(neg/total*100)+'%' : '0%';
+  document.getElementById('ring-respons').textContent = respondedPct+'%';
+
+  // ── Chart 1: Distribusi Bintang ──
+  new Chart(document.getElementById('chart-bintang'), {
+    type:'bar',
+    data:{
+      labels:['1★','2★','3★','4★','5★'],
+      datasets:[{
+        data:[1,2,3,4,5].map(i => data.distribusi_bintang[i] || 0),
+        backgroundColor: PALET.bintang,
+        borderRadius:3,
+        maxBarThickness:46
+      }]
+    },
+    options:{
+      plugins:{legend:{display:false}},
+      scales:{
+        y:{beginAtZero:true, grid:{color:'#EFE6D2'}},
+        x:{grid:{display:false}}
+      }
+    }
+  });
+
+  // ── Chart 2: Sentimen Pie ──
+  const sent = data.distribusi_sentimen;
+  new Chart(document.getElementById('chart-sentimen'), {
+    type:'doughnut',
+    data:{
+      labels:Object.keys(sent),
+      datasets:[{
+        data:Object.values(sent),
+        backgroundColor:Object.keys(sent).map(k =>
+          k==='Positif' ? PALET.sawah : k==='Negatif' ? PALET.stamp : PALET.kuningan),
+        borderColor:'#FFFDF8',
+        borderWidth:3
+      }]
+    },
+    options:{
+      cutout:'62%',
+      plugins:{legend:{position:'bottom', labels:{boxWidth:12, font:{size:11}}}}
+    }
+  });
+
+  // ── Chart 3: Tren per Tahun ──
+  const tren = data.tren_per_tahun;
+  new Chart(document.getElementById('chart-tren'), {
+    type:'line',
+    data:{
+      labels:tren.map(t => t.tahun),
+      datasets:[
+        {label:'Positif', data:tren.map(t=>t.Positif), borderColor:PALET.sawah, backgroundColor:PALET.sawah, tension:0.3},
+        {label:'Netral', data:tren.map(t=>t.Netral), borderColor:PALET.kuningan, backgroundColor:PALET.kuningan, tension:0.3},
+        {label:'Negatif', data:tren.map(t=>t.Negatif), borderColor:PALET.stamp, backgroundColor:PALET.stamp, tension:0.3}
+      ]
+    },
+    options:{
+      plugins:{legend:{position:'bottom', labels:{boxWidth:12, font:{size:11}}}},
+      scales:{ y:{beginAtZero:true, grid:{color:'#EFE6D2'}}, x:{grid:{display:false}} }
+    }
+  });
+
+  // ── Chart 4: Rata-rata Bintang per Tahun ──
+  const avgTahun = data.avg_bintang_per_tahun;
+  const tahunKeys = Object.keys(avgTahun).sort();
+  new Chart(document.getElementById('chart-avg-tahun'), {
+    type:'bar',
+    data:{
+      labels:tahunKeys,
+      datasets:[{
+        data:tahunKeys.map(t => avgTahun[t]),
+        backgroundColor: PALET.inkSoft,
+        borderRadius:3,
+        maxBarThickness:40
+      }]
+    },
+    options:{
+      plugins:{legend:{display:false}},
+      scales:{ y:{beginAtZero:true, max:5, grid:{color:'#EFE6D2'}}, x:{grid:{display:false}} }
+    }
+  });
+
+  // ── Kategori list (bar horizontal manual, biar match desain) ──
+  const katList = document.getElementById('kat-list');
+  const kategori = Object.entries(data.frekuensi_kategori).slice(0, 9);
+  const maxKat = Math.max(...kategori.map(([,v]) => v));
+  katList.innerHTML = kategori.map(([nama, jumlah]) => `
+    <div class="kat-row">
+      <span class="nama">${nama}</span>
+      <span class="bar-bg"><span class="bar-fg" style="width:${(jumlah/maxKat*100).toFixed(0)}%"></span></span>
+      <span class="jumlah">${jumlah}</span>
+    </div>
+  `).join('');
+
+  // ── Chart 5: Responsivitas Developer ──
+  const resp = data.responsivitas_developer;
+  new Chart(document.getElementById('chart-respons'), {
+    type:'bar',
+    data:{
+      labels:['Tidak Dibalas','Dibalas'],
+      datasets:[{
+        data:[resp.Tidak, resp.Ya],
+        backgroundColor:['#C9BBA0', PALET.inkSoft],
+        borderRadius:3,
+        maxBarThickness:60
+      }]
+    },
+    options:{
+      indexAxis:'y',
+      plugins:{legend:{display:false}},
+      scales:{ x:{beginAtZero:true, grid:{color:'#EFE6D2'}}, y:{grid:{display:false}} }
+    }
+  });
+
+  // ── Tabel review terbaru ──
+  const tbody = document.getElementById('tabel-review');
+  tbody.innerHTML = data.sample_reviews.map(r => {
+    const kelas = r.bintang >= 4 ? 'positif' : r.bintang === 3 ? 'netral' : 'negatif';
+    return `
+      <tr>
+        <td>${r.nama || '–'}</td>
+        <td class="isi-review">${(r.isi || '').slice(0,140)}${(r.isi||'').length>140?'…':''}</td>
+        <td><span class="bintang-pill ${kelas}">${'★'.repeat(r.bintang)}${'☆'.repeat(5-r.bintang)}</span></td>
+        <td>${formatTanggal(r.tanggal)}</td>
+        <td>${r.versi || '–'}</td>
+      </tr>`;
+  }).join('');
+}
+
+muatData();
+</script>
+</body>
+</html>
