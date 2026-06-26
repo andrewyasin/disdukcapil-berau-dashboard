@@ -6,7 +6,7 @@ Disdukcapil Kabupaten Berau dari Google Play Store. Data diperbarui
 GitHub Pages — mendukung pemenuhan **Aspek 50303 (Pemanfaatan Big Data)**
 pada penilaian EPSS/IPS BPS.
 
-🔗 **Live demo:** [andrewyasin.github.io/dashboard-disdukcapil-berau](https://andrewyasin.github.io/dashboard-disdukcapil-berau/)
+🔗 **Demo:** [andrewyasin.github.io/dashboard-disdukcapil-berau](https://andrewyasin.github.io/dashboard-disdukcapil-berau/)
 
 ---
 
